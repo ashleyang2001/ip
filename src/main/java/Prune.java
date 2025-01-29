@@ -7,12 +7,12 @@ public class Prune {
     /**
      * Command to exit the program
      **/
-    private static final String EXIT_COMMAND = "bye";
+    public static final String EXIT_COMMAND = "bye";
 
     /**
-     * String array to store user's input
+     * Tasks array to store Task
      **/
-    private final String[] tasks = new String[100];
+    private final Task[] tasks = new Task[100];
 
     /**
      * Number of tasks stored in tasks.
@@ -22,15 +22,28 @@ public class Prune {
     /**
      * Command to display all tasks stored
      **/
-    private static final String DISPLAY_TASKS_COMMAND = "list";
+    public static final String DISPLAY_TASKS_COMMAND = "list";
 
     /**
-     * Adds task to tasks array, increment tasks' count
-     * @param task Task to be added in tasks array
+     * Command to mark task as done
      */
-    private void addTask(String task) {
+    public static final String MARK_DONE_COMMAND = "mark";
+
+    /**
+     * Command to mark task as done
+     */
+    public static final String MARK_NOT_DONE_COMMAND = "unmark";
+
+    /**
+     * Instantiate Task and add Task to tasks array
+     * Increments taskCount
+     *
+     * @param description Description of task
+     */
+    private void addTask(String description) {
+        Task task = new Task(description);
         this.tasks[tasksCount] = task;
-        System.out.printf("\tadded: %s\n", task);
+        System.out.printf("\tadded: %s\n", task.getDescription());
         tasksCount++;
     }
 
@@ -38,18 +51,44 @@ public class Prune {
      * Prints all tasks in tasks array
      */
     private void printTasks() {
-        for (int i = 0; i < tasksCount; i++) {
-            System.out.printf("\t%s. %s\n", i + 1, tasks[i]);
+        System.out.println("\tHere are the tasks in your list:");
+        if (tasksCount == 0) {
+            System.out.println("\tHooray! There are no tasks in your list.");
+        } else {
+            for (int i = 0; i < tasksCount; i++) {
+                System.out.printf("\t%s.%s", i + 1, tasks[i].toString());
+            }
         }
     }
 
     /**
-     * Main method to interact with the chatbot.
-     * The program first greets the user, and wait for user input.
-     * It stores text entered by user and display them back to the user when requested using command "list".
-     * Exits when the user types the command "bye".
+     * Process "mark" and "unmark" commands to reflect task completion status
      *
-     * @param args Command line arguments, not used in program.
+     * @param input String input containing command and task number separated by a space
+     */
+    private void markTask(String input) {
+        try {
+            String[] pair = input.split(" ");
+            int taskIndex = Integer.parseInt(pair[1]) - 1;
+            String command = pair[0];
+            if (command.equals(MARK_DONE_COMMAND)) {
+                // "mark" to mark task as done
+                this.tasks[taskIndex].markAsDone();
+            } else if (command.equals(MARK_NOT_DONE_COMMAND)) {
+                // "unmark" to mark task as not done yet
+                this.tasks[taskIndex].markAsNotDone();
+            }
+        } catch (Exception e) {
+            System.out.println("\tPlease enter a valid task number.");
+        }
+    }
+
+    /**
+     * Main method to interact with the chatbot
+     * The program first greets the user, and waits for user's input
+     * It is able to add tasks, mark or unmark tasks and display all tasks depending on user's input
+     *
+     * @param args Command line arguments, not used in program
      */
     public static void main(String[] args) {
         // Instantiate chatbot
@@ -85,8 +124,14 @@ public class Prune {
                 // Print all tasks when "list" is inputted
                 chatbot.printTasks();
             } else {
-                // Store user's input as task in tasks array
-                chatbot.addTask(input);
+                // Check if input is in format "mark taskNum" or "unmark taskNum"
+                if (input.matches("mark -?\\d+") || input.matches("unmark -?\\d+")) {
+                    // Either mark or unmark task based on input.
+                    chatbot.markTask(input);
+                } else {
+                    // For any other commands, store user's input as task in tasks array
+                    chatbot.addTask(input);
+                }
             }
         }
     }
