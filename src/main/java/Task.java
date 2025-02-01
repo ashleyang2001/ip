@@ -25,7 +25,7 @@ public class Task {
             this.isDone = true;
             System.out.println("\tNice! I've marked this task as done:");
         }
-        System.out.printf("\t\t%s", toString());
+        System.out.printf("\t\t%s\n", toString());
     }
 
     /**
@@ -38,7 +38,7 @@ public class Task {
             this.isDone = false;
             System.out.println("\tOk, I've marked this task as not done yet:");
         }
-        System.out.printf("\t\t%s", toString());
+        System.out.printf("\t\t%s\n", toString());
     }
 
     /**
@@ -46,7 +46,8 @@ public class Task {
      *
      * @return Formatted string using its completion status and description
      */
+    @Override
     public String toString() {
-        return String.format("[%s] %s\n", this.getStatusIcon(), this.description);
+        return String.format("[%s] %s", this.getStatusIcon(), this.description);
     }
 }
