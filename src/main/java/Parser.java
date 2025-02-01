@@ -24,22 +24,22 @@ public class Parser {
      * @param input User's input as a string
      */
     public void processInput(String input) {
-        String[] pair = input.split(" ", 2);
-        String command = pair[0];
+        String[] inputArray = input.split(" ", 2);
+        String command = inputArray[0];
         if (input.equals(DISPLAY_TASKS_COMMAND)) {
             // Process display task command
             this.chatbot.printTasks();
         } else if (command.equals(MARK_DONE_COMMAND) || command.equals(MARK_NOT_DONE_COMMAND)) {
             // Process mark/unmark commands
             try {
-                int taskIndex = Integer.parseInt(pair[1]) - 1;
+                int taskIndex = Integer.parseInt(inputArray[1]) - 1;
                 processMarking(command, taskIndex);
             } catch (Exception e) {
                 System.out.println("\tPlease enter a valid task number.");
             }
         } else {
             // Process adding task command
-            String details = pair[1];
+            String details = inputArray[1];
             processAdding(command, details);
         }
     }
