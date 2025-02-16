@@ -1,3 +1,7 @@
+package Prune;
+
+import Prune.Tasks.Task;
+
 /**
  * The Prune class is a chatbot named Prune who manages all tasks.
  */

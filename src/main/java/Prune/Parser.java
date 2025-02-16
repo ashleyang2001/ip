@@ -1,3 +1,12 @@
+package Prune;
+
+import Prune.Exceptions.InvalidCommand;
+import Prune.Exceptions.InvalidTaskNumber;
+import Prune.Tasks.Deadline;
+import Prune.Tasks.Event;
+import Prune.Tasks.Task;
+import Prune.Tasks.ToDo;
+
 public class Parser {
 
     public static final String DISPLAY_TASKS_COMMAND = "list";

@@ -1,3 +1,5 @@
+package Prune;
+
 import java.util.Scanner;
 
 public class UserInterface {
