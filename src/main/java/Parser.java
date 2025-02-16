@@ -23,24 +23,20 @@ public class Parser {
      *
      * @param input User's input as a string
      */
-    public void processInput(String input) {
+    public void processInput(String input) throws InvalidCommand, InvalidTaskNumber {
         String[] inputArray = input.split(" ", 2);
         String command = inputArray[0];
-        if (input.equals(DISPLAY_TASKS_COMMAND)) {
+        if (command.equals(DISPLAY_TASKS_COMMAND)) {
             // Process display task command
             this.chatbot.printTasks();
         } else if (command.equals(MARK_DONE_COMMAND) || command.equals(MARK_NOT_DONE_COMMAND)) {
             // Process mark/unmark commands
-            try {
-                int taskIndex = Integer.parseInt(inputArray[1]) - 1;
-                processMarking(command, taskIndex);
-            } catch (Exception e) {
-                System.out.println("\tPlease enter a valid task number.");
-            }
-        } else {
+            processMarking(inputArray);
+        } else if (command.equals(TODO_COMMAND) || command.equals(DEADLINE_COMMAND) || command.equals(EVENT_COMMAND)) {
             // Process adding task command
-            String details = inputArray[1];
-            processAdding(command, details);
+            processAdding(inputArray);
+        } else {
+            throw new InvalidCommand(String.format("\tUnknown command: %s\n\tPlease try again", command));
         }
     }
 
@@ -48,14 +44,22 @@ public class Parser {
      * Process marking commands
      * Calls Prune chatbot's method to mark task as done or not done accordingly
      *
-     * @param command   Command "mark" to mark as done and "unmark" to mark as not done
-     * @param taskIndex Index of task to be updated
+     * @param input Command and Index of task to be updated in an array
      */
-    public void processMarking(String command, int taskIndex) {
-        if (command.equals(MARK_DONE_COMMAND)) {
-            this.chatbot.markTask(taskIndex, true);
-        } else if (command.equals(MARK_NOT_DONE_COMMAND)) {
-            this.chatbot.markTask(taskIndex, false);
+    public void processMarking(String[] input) throws InvalidTaskNumber {
+        String command = input[0];
+        try {
+            int taskIndex = Integer.parseInt(input[1]) - 1;
+            if (taskIndex >= this.chatbot.tasksCount || taskIndex < 0) {
+                throw new InvalidTaskNumber("Please enter a valid task number");
+            }
+            if (command.equals(MARK_DONE_COMMAND)) {
+                this.chatbot.markTask(taskIndex, true);
+            } else if (command.equals(MARK_NOT_DONE_COMMAND)) {
+                this.chatbot.markTask(taskIndex, false);
+            }
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("Task number must be an integer.");
         }
 
     }
@@ -64,31 +68,45 @@ public class Parser {
      * Process adding command according to type of Task
      * Create Task accordingly and calls Prune chatbot's method to add task into array
      *
-     * @param command Command to denote type of task
-     * @param details Details include task description and related datetimes
+     * @param input Input include command, task description and related datetimes in an array
      */
-    public void processAdding(String command, String details) {
-        String[] inputArray;
-        String description;
-        Task task;
-        if (command.equals(TODO_COMMAND)) {
-            // Process Todo
-            task = new ToDo(details);
-        } else if (command.equals(DEADLINE_COMMAND)) {
-            // process Deadline
-            inputArray = details.split(" /by ");
-            description = inputArray[0];
-            String by = inputArray[1];
-            task = new Deadline(description, by);
-        } else {
-            // Process Event
-            inputArray = details.split(" /from ");
-            description = inputArray[0];
-            String[] fromToArray = inputArray[1].split(" /to ");
-            String from = fromToArray[0];
-            String to = fromToArray[1];
-            task = new Event(description, from, to);
+    public void processAdding(String[] input) {
+        String command = input[0];
+        try {
+            String details = input[1];
+            String[] inputArray;
+            String description;
+            Task task;
+            if (command.equals(TODO_COMMAND)) {
+                // Process Todo
+                task = new ToDo(details);
+            } else if (command.equals(DEADLINE_COMMAND)) {
+                // process Deadline
+                inputArray = details.split(" /by ");
+                description = inputArray[0];
+                String by = inputArray[1];
+                task = new Deadline(description, by);
+            } else {
+                // Process Event
+                inputArray = details.split(" /from ");
+                description = inputArray[0];
+                String[] fromToArray = inputArray[1].split(" /to ");
+                String from = fromToArray[0];
+                String to = fromToArray[1];
+                task = new Event(description, from, to);
+            }
+            this.chatbot.addTask(task);
+        } catch (Exception e) {
+            System.out.println(String.format("\tInsufficient descriptions given for command: %s\n\t" +
+                    "Please ensure the following format:\n" +
+                    "\t\ttodo description\n" +
+                    "\t\tdeadline description /by when\n" +
+                    "\t\tevent description /from start /to end", command));
         }
-        this.chatbot.addTask(task);
+    }
+
+    public static void main(String[] args) {
+        int taskIndex = Integer.parseInt("0//") - 1;
+        System.out.println(taskIndex);
     }
 }
