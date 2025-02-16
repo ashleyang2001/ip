@@ -4,9 +4,9 @@
 public class Prune {
 
     public static final int MAX_NUMBER_OF_TASKS = 100;
-    private final Task[] tasks = new Task[MAX_NUMBER_OF_TASKS];
+    public final Task[] tasks = new Task[MAX_NUMBER_OF_TASKS];
 
-    private int tasksCount = 0;
+    public int tasksCount = 0;
 
     /**
      * Instantiate Task and add Task to tasks array
@@ -61,7 +61,7 @@ public class Prune {
                 String output = UserInterface.interactWithUser();
                 parser.processInput(output);
             } catch (Exception e) {
-                System.out.println("Please enter a valid input.\n");
+                System.out.println(e.getMessage());
             }
         }
     }
