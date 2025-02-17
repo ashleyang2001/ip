@@ -43,18 +43,15 @@ public class Parser {
             // Process mark/unmark commands
             task = processMarking(inputArray);
             printMarkTaskMsg(task);
-            //this.chatbot.writeMarking(this.chatbot.tasks.indexOf(task), command);
         } else if (command.equals(TODO_COMMAND) || command.equals(DEADLINE_COMMAND) || command.equals(EVENT_COMMAND)) {
             // Process adding task command
             task = processAdding(inputArray);
             printAddTaskMsg(task);
             String toWrite = task.getMarkCommand() + " " + String.join(" ", input);
-            //this.chatbot.writeNewTask(toWrite);
         } else if (command.equals(DELETE_COMMAND)) {
             // Process delete task command
             task = processDeleting(inputArray);
             printDeleteTaskMsg(task);
-            //this.chatbot.writeDeleteTask(this.chatbot.tasks.indexOf(task));
         } else {
             throw new InvalidCommand(String.format("\tUnknown command: %s\n\tPlease try again", command));
         }
