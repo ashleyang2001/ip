@@ -7,7 +7,7 @@ import Prune.Tasks.Event;
 import Prune.Tasks.Task;
 import Prune.Tasks.ToDo;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Parser {
 
@@ -31,29 +31,64 @@ public class Parser {
         this.chatbot = chatbot;
     }
 
-    /**
-     * Process user's input for making calls to Prune chatbot's methods
-     *
-     * @param input User's input as a string
-     */
+
     public void processInput(String input) throws InvalidCommand, InvalidTaskNumber {
         String[] inputArray = input.split(" ", 2);
         String command = inputArray[0];
+        Task task;
         if (command.equals(DISPLAY_TASKS_COMMAND)) {
             // Process display task command
             this.chatbot.printTasks();
         } else if (command.equals(MARK_DONE_COMMAND) || command.equals(MARK_NOT_DONE_COMMAND)) {
             // Process mark/unmark commands
-            processMarking(inputArray);
+            task = processMarking(inputArray);
+            printMarkTaskMsg(task);
+            //this.chatbot.writeMarking(this.chatbot.tasks.indexOf(task), command);
         } else if (command.equals(TODO_COMMAND) || command.equals(DEADLINE_COMMAND) || command.equals(EVENT_COMMAND)) {
             // Process adding task command
-            processAdding(inputArray);
+            task = processAdding(inputArray);
+            printAddTaskMsg(task);
+            String toWrite = task.getMarkCommand() + " " + String.join(" ", input);
+            //this.chatbot.writeNewTask(toWrite);
         } else if (command.equals(DELETE_COMMAND)) {
             // Process delete task command
-            processDeleting(inputArray);
+            task = processDeleting(inputArray);
+            printDeleteTaskMsg(task);
+            //this.chatbot.writeDeleteTask(this.chatbot.tasks.indexOf(task));
         } else {
             throw new InvalidCommand(String.format("\tUnknown command: %s\n\tPlease try again", command));
         }
+    }
+
+    public void printAddTaskMsg(Task task) {
+        System.out.printf("\tGot it. I've added this task:\n\t\t%s", task);
+        System.out.printf("\n\tNow you have %d tasks in the list.\n", this.chatbot.tasks.size());
+    }
+
+    public void printDeleteTaskMsg(Task task) {
+        System.out.printf("\tGot it! I've removed this task:\n\t\t%s", task);
+        System.out.printf("\n\tNow you have %d tasks in the list.\n", this.chatbot.tasks.size());
+    }
+
+    public void printMarkTaskMsg(Task task) {
+        if (task.getIsDone()) {
+            System.out.println("\tNice! I've marked this task as done:");
+        } else {
+            System.out.println("\tOk, I've marked this task as not done yet:");
+        }
+        System.out.printf("\t\t%s\n", task.toString());
+
+    }
+
+    public void processSavedData(String input) {
+        String[] inputArray = input.split(" ", 3);
+        String markStatus = inputArray[0];
+        boolean isDone = markStatus.equals(MARK_DONE_COMMAND);
+        // Form add task input array by removing mark/unmark command
+        String[] newInputArray = Arrays.copyOfRange(inputArray, 1, inputArray.length);
+        processAdding(newInputArray);
+        Task addedTask = this.chatbot.tasks.get(this.chatbot.tasks.size() - 1);
+        this.chatbot.markTask(addedTask, isDone);
     }
 
     /**
@@ -62,7 +97,7 @@ public class Parser {
      *
      * @param input Command and Index of task to be updated in an array
      */
-    public void processMarking(String[] input) throws InvalidTaskNumber {
+    public Task processMarking(String[] input) throws InvalidTaskNumber {
         String command = input[0];
         try {
             int taskIndex = Integer.parseInt(input[1]) - 1;
@@ -73,12 +108,13 @@ public class Parser {
             boolean isDone;
             isDone = command.equals(MARK_DONE_COMMAND);
             this.chatbot.markTask(task, isDone);
+            return task;
         } catch (NumberFormatException e) {
             throw new NumberFormatException("Task number must be an integer.");
         }
     }
 
-    public void processDeleting(String[] input) throws InvalidTaskNumber {
+    public Task processDeleting(String[] input) throws InvalidTaskNumber {
         try {
             int taskIndex = Integer.parseInt(input[1]) - 1;
             if (taskIndex >= this.chatbot.tasks.size() || taskIndex < 0) {
@@ -86,6 +122,7 @@ public class Parser {
             }
             Task task = this.chatbot.tasks.get(taskIndex);
             this.chatbot.deleteTask(task);
+            return task;
         } catch (NumberFormatException e) {
             throw new NumberFormatException("Task number must be an integer.");
         }
@@ -97,7 +134,7 @@ public class Parser {
      *
      * @param input Input include command, task description and related datetimes in an array
      */
-    public void processAdding(String[] input) {
+    public Task processAdding(String[] input) {
         String command = input[0];
         try {
             String details = input[1];
@@ -123,12 +160,10 @@ public class Parser {
                 task = new Event(description, from, to);
             }
             this.chatbot.addTask(task);
+            return task;
         } catch (Exception e) {
-            System.out.println(String.format("\tInsufficient descriptions given for command: %s\n\t" +
-                    "Please ensure the following format:\n" +
-                    "\t\ttodo description\n" +
-                    "\t\tdeadline description /by when\n" +
-                    "\t\tevent description /from start /to end", command));
+            System.out.println(String.format("\tInsufficient descriptions given for command: %s\n\t" + "Please ensure the following format:\n" + "\t\ttodo description\n" + "\t\tdeadline description /by when\n" + "\t\tevent description /from start /to end", command));
         }
+        return null;
     }
 }

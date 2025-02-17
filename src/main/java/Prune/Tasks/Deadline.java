@@ -10,6 +10,11 @@ public class Deadline extends Task {
     }
 
     @Override
+    public String getInputString() {
+        return String.format("%s deadline %s /by %s", super.getMarkCommand(), this.description, this.by);
+    }
+
+    @Override
     public String toString() {
         return "[D]" + super.toString() + " (by: " + by + ")";
     }

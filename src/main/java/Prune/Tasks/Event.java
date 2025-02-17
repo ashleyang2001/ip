@@ -12,6 +12,11 @@ public class Event extends Task {
     }
 
     @Override
+    public String getInputString() {
+        return String.format("%s event %s /from %s /to %s", super.getMarkCommand(), this.description, this.from, this.to);
+    }
+
+    @Override
     public String toString() {
         return String.format("[E]%s (from: %s to: %s)", super.toString(), from, to);
     }

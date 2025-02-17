@@ -1,6 +1,6 @@
 package Prune.Tasks;
 
-public class Task {
+public abstract class Task {
     protected String description;
     protected boolean isDone;
 
@@ -17,31 +17,22 @@ public class Task {
         return this.description;
     }
 
-    /**
-     * Mark task as done by setting isDone to true
-     */
-    public void markAsDone() {
-        if (this.isDone) {
-            System.out.println("\tThis task was already marked as done:");
-        } else {
-            this.isDone = true;
-            System.out.println("\tNice! I've marked this task as done:");
-        }
-        System.out.printf("\t\t%s\n", toString());
+    public boolean getIsDone() {
+        return this.isDone;
+    }
+
+    public String getMarkCommand() {
+        return (isDone ? "mark" : "unmark");
     }
 
     /**
-     * Mark task as not done by setting isDone to false
+     * Mark task as done by setting isDone to true
      */
-    public void markAsNotDone() {
-        if (!this.isDone) {
-            System.out.println("\tThis task was already marked as not done yet:");
-        } else {
-            this.isDone = false;
-            System.out.println("\tOk, I've marked this task as not done yet:");
-        }
-        System.out.printf("\t\t%s\n", toString());
+    public void markAsDone(boolean isDone) {
+        this.isDone = isDone;
     }
+
+    public abstract String getInputString();
 
     /**
      * Returns a string representation of the task

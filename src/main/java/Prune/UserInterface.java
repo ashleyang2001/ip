@@ -41,10 +41,10 @@ public class UserInterface {
         if (input.equals(EXIT_COMMAND)) {
             // End the program when "bye" is inputted
             output = ("\tBye. Hope to see you again soon!\n");
-            System.exit(0);
         } else {
             output = input;
         }
         return output;
     }
+
 }
