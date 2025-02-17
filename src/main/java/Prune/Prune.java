@@ -2,15 +2,15 @@ package Prune;
 
 import Prune.Tasks.Task;
 
+import java.util.ArrayList;
+
 /**
  * The Prune class is a chatbot named Prune who manages all tasks.
  */
 public class Prune {
 
     public static final int MAX_NUMBER_OF_TASKS = 100;
-    public final Task[] tasks = new Task[MAX_NUMBER_OF_TASKS];
-
-    public int tasksCount = 0;
+    public final ArrayList<Task> tasks = new ArrayList<>();
 
     /**
      * Instantiate Task and add Task to tasks array
@@ -19,10 +19,15 @@ public class Prune {
      * @param task Task to be added into tasks array
      */
     public void addTask(Task task) {
-        this.tasks[tasksCount] = task;
-        tasksCount++;
+        this.tasks.add(task);
         System.out.printf("\tGot it. I've added this task:\n\t\t%s", task);
-        System.out.printf("\n\tNow you have %d tasks in the list.\n", tasksCount);
+        System.out.printf("\n\tNow you have %d tasks in the list.\n", this.tasks.size());
+    }
+
+    public void deleteTask(Task task) {
+        this.tasks.remove(task);
+        System.out.printf("\tGot it! I've removed this task:\n\t\t%s", task);
+        System.out.printf("\n\tNow you have %d tasks in the list.\n", this.tasks.size());
     }
 
     /**
@@ -30,11 +35,11 @@ public class Prune {
      */
     public void printTasks() {
         System.out.println("\tHere are the tasks in your list:");
-        if (tasksCount == 0) {
+        if (this.tasks.size() == 0) {
             System.out.println("\tHooray! There are no tasks in your list.");
         } else {
-            for (int i = 0; i < tasksCount; i++) {
-                System.out.printf("\t%s.%s\n", i + 1, tasks[i]);
+            for (int i = 0; i < this.tasks.size(); i++) {
+                System.out.printf("\t%s.%s\n", i + 1, tasks.get(i));
             }
         }
     }
@@ -42,14 +47,14 @@ public class Prune {
     /**
      * Process "mark" and "unmark" commands to reflect task completion status
      *
-     * @param taskIndex Index of task to be marked
-     * @param isDone    Boolean variable to decide whether to mark or unmark task
+     * @param task   Task to be marked
+     * @param isDone Boolean variable to decide whether to mark or unmark task
      */
-    public void markTask(int taskIndex, boolean isDone) {
+    public void markTask(Task task, boolean isDone) {
         if (isDone) {
-            this.tasks[taskIndex].markAsDone();
+            task.markAsDone();
         } else {
-            this.tasks[taskIndex].markAsNotDone();
+            task.markAsNotDone();
         }
     }
 

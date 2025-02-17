@@ -7,6 +7,8 @@ import Prune.Tasks.Event;
 import Prune.Tasks.Task;
 import Prune.Tasks.ToDo;
 
+import java.util.ArrayList;
+
 public class Parser {
 
     public static final String DISPLAY_TASKS_COMMAND = "list";
@@ -20,6 +22,8 @@ public class Parser {
     public static final String DEADLINE_COMMAND = "deadline";
 
     public static final String EVENT_COMMAND = "event";
+
+    public static final String DELETE_COMMAND = "delete";
 
     public Prune chatbot;
 
@@ -44,6 +48,9 @@ public class Parser {
         } else if (command.equals(TODO_COMMAND) || command.equals(DEADLINE_COMMAND) || command.equals(EVENT_COMMAND)) {
             // Process adding task command
             processAdding(inputArray);
+        } else if (command.equals(DELETE_COMMAND)) {
+            // Process delete task command
+            processDeleting(inputArray);
         } else {
             throw new InvalidCommand(String.format("\tUnknown command: %s\n\tPlease try again", command));
         }
@@ -59,18 +66,29 @@ public class Parser {
         String command = input[0];
         try {
             int taskIndex = Integer.parseInt(input[1]) - 1;
-            if (taskIndex >= this.chatbot.tasksCount || taskIndex < 0) {
+            if (taskIndex >= this.chatbot.tasks.size() || taskIndex < 0) {
                 throw new InvalidTaskNumber("Please enter a valid task number");
             }
-            if (command.equals(MARK_DONE_COMMAND)) {
-                this.chatbot.markTask(taskIndex, true);
-            } else if (command.equals(MARK_NOT_DONE_COMMAND)) {
-                this.chatbot.markTask(taskIndex, false);
-            }
+            Task task = this.chatbot.tasks.get(taskIndex);
+            boolean isDone;
+            isDone = command.equals(MARK_DONE_COMMAND);
+            this.chatbot.markTask(task, isDone);
         } catch (NumberFormatException e) {
             throw new NumberFormatException("Task number must be an integer.");
         }
+    }
 
+    public void processDeleting(String[] input) throws InvalidTaskNumber {
+        try {
+            int taskIndex = Integer.parseInt(input[1]) - 1;
+            if (taskIndex >= this.chatbot.tasks.size() || taskIndex < 0) {
+                throw new InvalidTaskNumber("Please enter a valid task number");
+            }
+            Task task = this.chatbot.tasks.get(taskIndex);
+            this.chatbot.deleteTask(task);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("Task number must be an integer.");
+        }
     }
 
     /**
@@ -112,10 +130,5 @@ public class Parser {
                     "\t\tdeadline description /by when\n" +
                     "\t\tevent description /from start /to end", command));
         }
-    }
-
-    public static void main(String[] args) {
-        int taskIndex = Integer.parseInt("0//") - 1;
-        System.out.println(taskIndex);
     }
 }
