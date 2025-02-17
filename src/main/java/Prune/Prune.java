@@ -15,6 +15,7 @@ import java.util.Scanner;
 public class Prune {
 
     public final ArrayList<Task> tasks = new ArrayList<>();
+    // DATA_PATH relative to root folder
     public static final String DATA_PATH = "src/main/java/Prune/Data/saved_tasks.txt";
 
     /**
