@@ -1,5 +1,5 @@
 package Prune;
-
+import Prune.Tasks.TaskList;
 import Prune.Exceptions.InvalidCommand;
 import Prune.Exceptions.InvalidTaskNumber;
 import Prune.Tasks.Deadline;
@@ -25,10 +25,12 @@ public class Parser {
 
     public static final String DELETE_COMMAND = "delete";
 
-    public Prune chatbot;
+    public static final String EXIT_COMMAND = "bye";
 
-    public Parser(Prune chatbot) {
-        this.chatbot = chatbot;
+    public TaskList tasks;
+
+    public Parser(TaskList tasks) {
+        this.tasks = tasks;
     }
 
 
@@ -38,7 +40,7 @@ public class Parser {
         Task task;
         if (command.equals(DISPLAY_TASKS_COMMAND)) {
             // Process display task command
-            this.chatbot.printTasks();
+            this.tasks.printTasks();
         } else if (command.equals(MARK_DONE_COMMAND) || command.equals(MARK_NOT_DONE_COMMAND)) {
             // Process mark/unmark commands
             task = processMarking(inputArray);
@@ -59,12 +61,12 @@ public class Parser {
 
     public void printAddTaskMsg(Task task) {
         System.out.printf("\tGot it. I've added this task:\n\t\t%s", task);
-        System.out.printf("\n\tNow you have %d tasks in the list.\n", this.chatbot.tasks.size());
+        System.out.printf("\n\tNow you have %d tasks in the list.\n", this.tasks.tasksList.size());
     }
 
     public void printDeleteTaskMsg(Task task) {
         System.out.printf("\tGot it! I've removed this task:\n\t\t%s", task);
-        System.out.printf("\n\tNow you have %d tasks in the list.\n", this.chatbot.tasks.size());
+        System.out.printf("\n\tNow you have %d tasks in the list.\n", this.tasks.tasksList.size());
     }
 
     public void printMarkTaskMsg(Task task) {
@@ -84,8 +86,8 @@ public class Parser {
         // Form add task input array by removing mark/unmark command
         String[] newInputArray = Arrays.copyOfRange(inputArray, 1, inputArray.length);
         processAdding(newInputArray);
-        Task addedTask = this.chatbot.tasks.get(this.chatbot.tasks.size() - 1);
-        this.chatbot.markTask(addedTask, isDone);
+        Task addedTask = this.tasks.tasksList.get(this.tasks.tasksList.size() - 1);
+        this.tasks.markTask(addedTask, isDone);
     }
 
     /**
@@ -98,13 +100,13 @@ public class Parser {
         String command = input[0];
         try {
             int taskIndex = Integer.parseInt(input[1]) - 1;
-            if (taskIndex >= this.chatbot.tasks.size() || taskIndex < 0) {
+            if (taskIndex >= this.tasks.tasksList.size() || taskIndex < 0) {
                 throw new InvalidTaskNumber("Please enter a valid task number");
             }
-            Task task = this.chatbot.tasks.get(taskIndex);
+            Task task = this.tasks.tasksList.get(taskIndex);
             boolean isDone;
             isDone = command.equals(MARK_DONE_COMMAND);
-            this.chatbot.markTask(task, isDone);
+            this.tasks.markTask(task, isDone);
             return task;
         } catch (NumberFormatException e) {
             throw new NumberFormatException("Task number must be an integer.");
@@ -114,11 +116,11 @@ public class Parser {
     public Task processDeleting(String[] input) throws InvalidTaskNumber {
         try {
             int taskIndex = Integer.parseInt(input[1]) - 1;
-            if (taskIndex >= this.chatbot.tasks.size() || taskIndex < 0) {
+            if (taskIndex >= this.tasks.tasksList.size() || taskIndex < 0) {
                 throw new InvalidTaskNumber("Please enter a valid task number");
             }
-            Task task = this.chatbot.tasks.get(taskIndex);
-            this.chatbot.deleteTask(task);
+            Task task = this.tasks.tasksList.get(taskIndex);
+            this.tasks.deleteTask(task);
             return task;
         } catch (NumberFormatException e) {
             throw new NumberFormatException("Task number must be an integer.");
@@ -156,7 +158,7 @@ public class Parser {
                 String to = fromToArray[1];
                 task = new Event(description, from, to);
             }
-            this.chatbot.addTask(task);
+            this.tasks.addTask(task);
             return task;
         } catch (Exception e) {
             System.out.println(String.format("\tInsufficient descriptions given for command: %s\n\t" + "Please ensure the following format:\n" + "\t\ttodo description\n" + "\t\tdeadline description /by when\n" + "\t\tevent description /from start /to end", command));
