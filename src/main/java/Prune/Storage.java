@@ -12,15 +12,12 @@ import java.util.Scanner;
 public class Storage {
 
     public String filePath;
-    public Parser parser;
 
-    Storage(String filePath, Parser parser) {
+    Storage(String filePath) {
         this.filePath = filePath;
-        this.parser = parser;
-
     }
 
-    public void load() {
+    public void load(Parser parser) {
         // Create file if it does not exist
         File file = new File(this.filePath);
         if (file.exists()) {

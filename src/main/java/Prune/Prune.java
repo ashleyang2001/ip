@@ -15,14 +15,14 @@ public class Prune {
     public Prune(String filePath) {
         this.ui = new Ui();
         this.tasks = new TaskList();
-        this.parser = new Parser(tasks);
-        this.storage = new Storage(filePath, parser);
+        this.storage = new Storage(filePath);
+        this.parser = new Parser(this.tasks, this.storage);
     }
 
 
     public void run() {
         // Load file
-        this.storage.load();
+        this.storage.load(this.parser);
         this.ui.greet();
         this.tasks.printTasks();
 
@@ -32,13 +32,11 @@ public class Prune {
                 if (output == null) {
                     break;
                 }
-                parser.processInput(output);
+                this.parser.processInput(output);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
-        // Rewrite file based on current list
-        this.storage.writeData(tasks);
     }
 
     /**

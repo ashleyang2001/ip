@@ -29,35 +29,54 @@ public class Parser {
 
     public TaskList tasks;
 
-    public Parser(TaskList tasks) {
+    public Storage storage;
+
+    public Parser(TaskList tasks, Storage storage) {
         this.tasks = tasks;
+        this.storage = storage;
     }
 
 
     public void processInput(String input) throws InvalidCommand, InvalidTaskNumber {
         String[] inputArray = input.split(" ", 2);
         String command = inputArray[0];
-        Task task;
-        if (command.equals(DISPLAY_TASKS_COMMAND)) {
-            // Process display task command
+        Task task = null;
+
+        switch (command) {
+        case DISPLAY_TASKS_COMMAND:
             this.tasks.printTasks();
-        } else if (command.equals(MARK_DONE_COMMAND) || command.equals(MARK_NOT_DONE_COMMAND)) {
-            // Process mark/unmark commands
+            return;
+
+        case MARK_DONE_COMMAND:
+        case MARK_NOT_DONE_COMMAND:
             task = processMarking(inputArray);
             printMarkTaskMsg(task);
-        } else if (command.equals(TODO_COMMAND) || command.equals(DEADLINE_COMMAND) || command.equals(EVENT_COMMAND)) {
-            // Process adding task command
+            break;
+
+        case TODO_COMMAND:
+        case DEADLINE_COMMAND:
+        case EVENT_COMMAND:
             task = processAdding(inputArray);
-            printAddTaskMsg(task);
-            String toWrite = task.getMarkCommand() + " " + String.join(" ", input);
-        } else if (command.equals(DELETE_COMMAND)) {
-            // Process delete task command
+            if (task != null) {
+                printAddTaskMsg(task);
+            }
+            break;
+
+        case DELETE_COMMAND:
             task = processDeleting(inputArray);
             printDeleteTaskMsg(task);
-        } else {
+            break;
+
+        default:
             throw new InvalidCommand(String.format("\tUnknown command: %s\n\tPlease try again", command));
         }
+
+        // Write data to file for mark, todo, deadline, event, delete commands
+        if (task != null) {
+            this.storage.writeData(this.tasks);
+        }
     }
+
 
     public void printAddTaskMsg(Task task) {
         System.out.printf("\tGot it. I've added this task:\n\t\t%s", task);
