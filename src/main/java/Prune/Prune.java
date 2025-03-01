@@ -24,8 +24,7 @@ public class Prune {
         // Load file
         this.storage.load(this.parser);
         this.ui.greet();
-        this.tasks.printTasks();
-
+        this.parser.displayTasks();
         while (true) {
             try {
                 String output = this.ui.interactWithUser();
