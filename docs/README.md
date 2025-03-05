@@ -1,30 +1,167 @@
-# Duke User Guide
+# Prune User Guide
 
-// Update the title above to match the actual product name
+![Prune chatbot](https://github.com/ashleyang2001/ip/blob/9931f04bc479b71d0a09c7d7829823cfc831f404/prune.png)
 
-// Product screenshot goes here
+The Prune chatbot is an app for managing tasks via a Command Line Interface (CLI).
 
-// Product intro goes here
+# Features
 
-## Adding deadlines
+## Listing all tasks: `list`
+Displays all tasks in the task list.
 
-// Describe the action and its outcome.
+**Format:** `list`
 
-// Give examples of usage
+**Example:**
+```
+	Here are the tasks in your list:
+	1.[T][ ] Join swimming club
+	2.[D][X] Complete Level 8 (by: Monday)
+	3.[E][ ] CS2113 Tutorial (from: 11am to: 12pm)
+```
 
-Example: `keyword (optional arguments)`
+---
 
-// A description of the expected outcome goes here
+## Marking task as completed: `mark`
+Marks a task as done in the task list.
+
+**Format:** `mark INDEX`
+
+- Marks the task at the specified `INDEX` as done.
+- The `INDEX` must be an integer between 1 and number of existing tasks (inclusive).
+
+**Example:**
+- `mark 1` Marks the first task as completed.
 
 ```
-expected output
+	Nice! I've marked this task as done:
+		[T][X] Join swimming club
 ```
 
-## Feature ABC
+---
 
-// Feature details
+## Marking task as not completed: `unmark`
+Marks a task as not done in the task list.
+
+**Format:** `unmark INDEX`
+
+- Mark the task at the specified `INDEX` as not done.
+- The `INDEX` must be an integer between 1 and number of existing tasks (inclusive).
+
+**Example:**
+- `unmark 2` Marks the second task as not completed.
+
+```
+	Ok, I've marked this task as not done yet:
+		[D][ ] Complete Level 8 (by: Monday)
+```
+
+---
+
+## Adding a ToDo task: `todo`
+Adds a ToDo task to the task list.
+
+**Format:** `todo DESCRIPTION`
+
+**Example:**
+- `todo Join Climbers Club` 
+
+```
+	Got it. I've added this task:
+		[T][ ] Join Climbers Club
+	Now you have 4 tasks in the list.
+```
+
+---
+
+## Adding a Deadline task: `deadline`
+Adds a deadline task with a deadline.
+
+**Format:** `deadline DESCRIPTION /by DATE`
+
+**Example:**
+- `deadline Submit CS2113 /by Week 9`
 
 
-## Feature XYZ
+```
+	Got it. I've added this task:
+		[D][ ] submit CS2113 (by: Week 9)
+	Now you have 5 tasks in the list.
+```
 
-// Feature details
+---
+
+## Adding an Event task: `event`
+Adds an event with a start and end time.
+
+**Format:** `event DESCRIPTION /from START /to END`
+
+**Example:**
+- `event Team meeting /from 1pm /to 2pm`
+
+```
+	Got it. I've added this task:
+		[E][ ] Team meeting (from: 1pm to: 2pm)
+	Now you have 6 tasks in the list.
+```
+
+---
+
+## Deleting a task: `delete`
+Deletes a specified task from the task list.
+
+**Format:** `delete INDEX`
+
+- Deletes the task at the specified `INDEX`.
+- The `INDEX` must be an integer between 1 and number of existing tasks (inclusive).
+
+**Example:**
+- `delete 3`
+
+```
+	Got it! I've removed this task:
+		[E][ ] CS2113 Tutorial (from: 11am to: 12pm)
+	Now you have 5 tasks in the list.
+```
+
+---
+
+## Finding tasks: `find`
+Finds all tasks whose description contain the given keyword.
+
+**Format:** `find KEYWORD`
+
+- The search is case-insensitive. e.g `join` will match `Join`
+- Matches substring within words. e.g `Jo` will match `Join`
+
+**Examples:**
+
+- `find join`  returns `Join swimming club` and `Join Climbers Club`
+
+```
+	Here are matching tasks in your list:
+	1.[T][X] Join swimming club
+	2.[T][ ] Join Climbers Club
+```
+
+- `find pruning` does not return anything
+```
+	There are no matching tasks found.
+```
+
+---
+
+## Exiting the program: `bye`
+Exits the program.
+
+**Format:** `bye`
+
+```
+Bye. Hope to see you again soon!
+```
+
+---
+
+## Saving the data
+Tasks are automatically saved to the hard disk after any command that modifies the data. There is no need to save manually.
+
+

@@ -20,7 +20,7 @@ public class TaskList {
     public TaskList find(String keyword) {
         ArrayList<Task> matchingTasks = new ArrayList<>();
         for (Task task : this.tasksList) {
-            if (task.getDescription().contains(keyword)) {
+            if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
                 matchingTasks.add(task);
             }
         }
