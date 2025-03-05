@@ -9,14 +9,29 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * The Storage class is for managing data storage operations, including
+ * loading and saving task data from-to a file.
+ */
 public class Storage {
 
     public String filePath;
 
+    /**
+     * Constructs a Storage object with the specified file path.
+     *
+     * @param filePath The path of the file to load from or write to.
+     */
     Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Loads data from the file specified in the filePath. If the file does not exist, it creates the file.
+     * It processes each line of the file using the provided parser.
+     *
+     * @param parser The parser used to process the data from the file.
+     */
     public void load(Parser parser) {
         // Create file if it does not exist
         File file = new File(this.filePath);
@@ -46,6 +61,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Writes tasks data from the provided TaskList to the file specified in the filePath.
+     * Overwrites the existing content in the file with the new task data.
+     *
+     * @param tasks TaskList containing the tasks to write to the file.
+     */
     public void writeData(TaskList tasks) {
         try {
             File file = new File(this.filePath);
