@@ -36,16 +36,16 @@ public class Storage {
         // Create file if it does not exist
         File file = new File(this.filePath);
         if (file.exists()) {
-            System.out.println("File exists: " + file.getAbsolutePath());
+            System.out.println("Storage file found: " + file.getAbsolutePath());
         } else {
             try {
                 if (file.createNewFile()) {
-                    System.out.println("File created: " + file.getAbsolutePath());
+                    System.out.println("Storage file created: " + file.getAbsolutePath());
                 } else {
-                    System.out.println("Failed to create file.");
+                    System.out.println("Failed to create storage file.");
                 }
             } catch (IOException e) {
-                System.out.println("An error occurred while creating the file.");
+                System.out.println(e.getMessage());
             }
         }
         // Read file
@@ -57,7 +57,7 @@ public class Storage {
             }
             scanner.close();
         } catch (FileNotFoundException e) {
-            System.out.printf("File is not found: %s\n", this.filePath);
+            System.out.printf("Storage file is not found: %s\n", this.filePath);
         }
     }
 
@@ -76,7 +76,7 @@ public class Storage {
             }
             writer.close();
         } catch (IOException e) {
-            System.out.printf("Failed to write to file: %s\n", e.getMessage());
+            System.out.printf("Failed to write to storage file: %s\n", e.getMessage());
         }
     }
 }

@@ -23,7 +23,7 @@ public class Parser {
     public static final String DEADLINE_COMMAND = "deadline";
     public static final String EVENT_COMMAND = "event";
     public static final String DELETE_COMMAND = "delete";
-
+    public static final String FIND_COMMAND = "find";
     public TaskList tasks;
     public Storage storage;
 
@@ -53,7 +53,7 @@ public class Parser {
 
         switch (command) {
         case DISPLAY_TASKS_COMMAND:
-            this.tasks.printTasks();
+            this.displayTasks();
             return;
 
         case MARK_DONE_COMMAND:
@@ -75,7 +75,10 @@ public class Parser {
             task = processDeleting(inputArray);
             printDeleteTaskMsg(task);
             break;
-
+        case FIND_COMMAND:
+            TaskList matchingTasks = processFinding(inputArray);
+            displayMatchingTasks(matchingTasks);
+            break;
         default:
             throw new InvalidCommand(String.format("\tUnknown command: %s\n\tPlease try again", command));
         }
@@ -83,6 +86,30 @@ public class Parser {
         // Write data to file for mark, todo, deadline, event, delete commands
         if (task != null) {
             this.storage.writeData(this.tasks);
+        }
+    }
+
+    /**
+     * Prints all tasks in tasks list.
+     */
+    public void displayTasks() {
+        if (this.tasks.isEmpty()) {
+            System.out.println("\tHooray! There are no tasks in your list.");
+        } else {
+            System.out.println("\tHere are the tasks in your list:");
+            this.tasks.printTasks();
+        }
+    }
+
+    /**
+     * Prints all matching tasks found.
+     */
+    public void displayMatchingTasks(TaskList matchingTasks) {
+        if (matchingTasks.isEmpty()) {
+            System.out.println("\tThere are no matching tasks found.");
+        } else {
+            System.out.println("\tHere are matching tasks in your list:");
+            matchingTasks.printTasks();
         }
     }
 
@@ -219,4 +246,10 @@ public class Parser {
         }
         return null;
     }
+
+    public TaskList processFinding(String[] input) {
+        String keyword = input[1];
+        return this.tasks.find(keyword);
+    }
+
 }

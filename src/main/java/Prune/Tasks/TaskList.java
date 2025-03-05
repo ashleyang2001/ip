@@ -7,7 +7,25 @@ import java.util.ArrayList;
  * It maintains a list of tasks and provides functionalities for task manipulation.
  */
 public class TaskList {
-    public final ArrayList<Task> tasksList = new ArrayList<>();
+    public final ArrayList<Task> tasksList;
+
+    public TaskList() {
+        this.tasksList = new ArrayList<>();
+    }
+
+    public TaskList(ArrayList<Task> tasks) {
+        this.tasksList = tasks;
+    }
+
+    public TaskList find(String keyword) {
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+        for (Task task : this.tasksList) {
+            if (task.getDescription().contains(keyword)) {
+                matchingTasks.add(task);
+            }
+        }
+        return new TaskList(matchingTasks);
+    }
 
     /**
      * Adds a task to the tasks list.
@@ -42,13 +60,16 @@ public class TaskList {
      * If the list is empty, a message will be displayed indicating that there are no tasks.
      */
     public void printTasks() {
-        System.out.println("\tHere are the tasks in your list:");
-        if (this.tasksList.isEmpty()) {
-            System.out.println("\tHooray! There are no tasks in your list.");
-        } else {
-            for (int i = 0; i < this.tasksList.size(); i++) {
-                System.out.printf("\t%s.%s\n", i + 1, tasksList.get(i));
-            }
+        for (int i = 0; i < this.tasksList.size(); i++) {
+            System.out.printf("\t%s.%s\n", i + 1, tasksList.get(i));
         }
+    }
+
+    public boolean isEmpty() {
+        return this.tasksList.isEmpty();
+    }
+
+    public int size() {
+        return this.tasksList.size();
     }
 }
