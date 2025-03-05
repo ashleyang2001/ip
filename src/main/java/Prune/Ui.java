@@ -2,6 +2,9 @@ package Prune;
 
 import java.util.Scanner;
 
+/**
+ * The Ui class handles interactions with the user, including user's input and output.
+ */
 public class Ui {
 
     public static final String EXIT_COMMAND = "bye";
@@ -9,15 +12,15 @@ public class Ui {
     public static Scanner scanner = new Scanner(System.in);
 
     /**
-     * Greet the user.
+     * Greets the user and displays the chatbot mascot.
      */
     public void greet() {
         System.out.println("\tHello! I am Prune.");
         String mascot = """
                 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⣶⣶⣶⣶⣶⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
                 ⠀⠀⠀⠀⠀⠀⣠⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣄⡀⠀⠀⠀⠀⠀
-                ⠀⠀⣠⣴⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣮⣵⣄⠀⠀⠀
-                ⠀⢾⣻⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⡀⠀
+                ⠀⠀⣠⣴⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣮⣵⣄⠀⠀⠀
+                ⠀⢾⣻⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⡀⠀
                 ⠸⣽⣻⠃⣿⡿⠋⣉⠛⣿⣿⣿⣿⣿⣿⣿⣿⣿⣏⡟⠉⡉⢻⣿⡌⣿⣳⡥⠀
                 ⢜⣳⡟⢸⣿⣷⣄⣠⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⣤⣠⣼⣿⣇⢸⢧⢣⠀
                 ⠨⢳⠇⣸⣿⣿⢿⣿⣿⣿⣿⡿⠿⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⡟⢆⠀
@@ -31,9 +34,9 @@ public class Ui {
     }
 
     /**
-     * Interacts with user to return input as a String
+     * Interacts with the user and returns their input as a String.
      *
-     * @return output String of user's input
+     * @return User's input as a String, or null if the exit command is given.
      */
     public String interactWithUser() {
         String input = scanner.nextLine();
@@ -48,6 +51,9 @@ public class Ui {
         return output;
     }
 
+    /**
+     * Displays goodbye message to the user.
+     */
     public void bye() {
         System.out.println("\tBye. Hope to see you again soon!\n");
     }

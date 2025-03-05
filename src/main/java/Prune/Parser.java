@@ -1,4 +1,5 @@
 package Prune;
+
 import Prune.Tasks.TaskList;
 import Prune.Exceptions.InvalidCommand;
 import Prune.Exceptions.InvalidTaskNumber;
@@ -9,34 +10,42 @@ import Prune.Tasks.ToDo;
 
 import java.util.Arrays;
 
+/**
+ * The Parser class processes user input and translates user's inputs into actions.
+ * It interacts with the TaskList and Storage classes to manage and store them.
+ */
 public class Parser {
 
     public static final String DISPLAY_TASKS_COMMAND = "list";
-
     public static final String MARK_DONE_COMMAND = "mark";
-
     public static final String MARK_NOT_DONE_COMMAND = "unmark";
-
     public static final String TODO_COMMAND = "todo";
-
     public static final String DEADLINE_COMMAND = "deadline";
-
     public static final String EVENT_COMMAND = "event";
-
     public static final String DELETE_COMMAND = "delete";
-
     public static final String FIND_COMMAND = "find";
-
     public TaskList tasks;
-
     public Storage storage;
 
+    /**
+     * Constructs a Parser object with a given TaskList and Storage.
+     *
+     * @param tasks   TaskList containing the tasks.
+     * @param storage Storage used to save the tasks.
+     */
     public Parser(TaskList tasks, Storage storage) {
         this.tasks = tasks;
         this.storage = storage;
     }
 
-
+    /**
+     * Processes the user input command and executes the corresponding task action.
+     * Handles user input commands.
+     *
+     * @param input Input string containing the command and task arguments.
+     * @throws InvalidCommand    If the command is unknown.
+     * @throws InvalidTaskNumber If the task number provided is invalid.
+     */
     public void processInput(String input) throws InvalidCommand, InvalidTaskNumber {
         String[] inputArray = input.split(" ", 2);
         String command = inputArray[0];
@@ -80,6 +89,9 @@ public class Parser {
         }
     }
 
+    /**
+     * Prints all tasks in tasks list.
+     */
     public void displayTasks() {
         if (this.tasks.isEmpty()) {
             System.out.println("\tHooray! There are no tasks in your list.");
@@ -89,6 +101,9 @@ public class Parser {
         }
     }
 
+    /**
+     * Prints all matching tasks found.
+     */
     public void displayMatchingTasks(TaskList matchingTasks) {
         if (matchingTasks.isEmpty()) {
             System.out.println("\tThere are no matching tasks found.");
@@ -98,16 +113,31 @@ public class Parser {
         }
     }
 
+    /**
+     * Prints a message after a task has been added.
+     *
+     * @param task Task that has been added.
+     */
     public void printAddTaskMsg(Task task) {
         System.out.printf("\tGot it. I've added this task:\n\t\t%s", task);
         System.out.printf("\n\tNow you have %d tasks in the list.\n", this.tasks.tasksList.size());
     }
 
+    /**
+     * Prints a message after a task has been deleted.
+     *
+     * @param task Task that has been deleted.
+     */
     public void printDeleteTaskMsg(Task task) {
         System.out.printf("\tGot it! I've removed this task:\n\t\t%s", task);
         System.out.printf("\n\tNow you have %d tasks in the list.\n", this.tasks.tasksList.size());
     }
 
+    /**
+     * Prints a message after a task has been marked as done or not done.
+     *
+     * @param task Task whose is done status has been changed.
+     */
     public void printMarkTaskMsg(Task task) {
         if (task.getIsDone()) {
             System.out.println("\tNice! I've marked this task as done:");
@@ -115,9 +145,13 @@ public class Parser {
             System.out.println("\tOk, I've marked this task as not done yet:");
         }
         System.out.printf("\t\t%s\n", task.toString());
-
     }
 
+    /**
+     * Processes the saved data when loading from a file.
+     *
+     * @param input Input string containing the task data.
+     */
     public void processSavedData(String input) {
         String[] inputArray = input.split(" ", 3);
         String markStatus = inputArray[0];
@@ -130,10 +164,11 @@ public class Parser {
     }
 
     /**
-     * Process marking commands
-     * Calls Prune chatbot's method to mark task as done or not done accordingly
+     * Processes the mark/unmark command and updates the task's is done status.
      *
-     * @param input Command and Index of task to be updated in an array
+     * @param input Array containing the mark command and the task number.
+     * @return Task that was marked or unmarked.
+     * @throws InvalidTaskNumber If the task number is invalid.
      */
     public Task processMarking(String[] input) throws InvalidTaskNumber {
         String command = input[0];
@@ -152,6 +187,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Processes the delete command and removes the specified task from task list.
+     *
+     * @param input Array containing the delete command and task number.
+     * @return The task that was deleted.
+     * @throws InvalidTaskNumber If the task number is invalid.
+     */
     public Task processDeleting(String[] input) throws InvalidTaskNumber {
         try {
             int taskIndex = Integer.parseInt(input[1]) - 1;
@@ -167,10 +209,10 @@ public class Parser {
     }
 
     /**
-     * Process adding command according to type of Task
-     * Create Task accordingly and calls Prune chatbot's method to add task into array
+     * Processes the adding command and creates a task based on the command type (todo, deadline, event).
      *
-     * @param input Input include command, task description and related datetimes in an array
+     * @param input Array containing the command and task arguments.
+     * @return Added task.
      */
     public Task processAdding(String[] input) {
         String command = input[0];
