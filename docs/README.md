@@ -15,7 +15,9 @@ The Prune chatbot is an app for managing tasks via a Command Line Interface (CLI
   - [Exiting the program: `bye`](#exiting-the-program-bye)
   - [Saving the data](#saving-the-data)
   - [Editing the data file](#editing-the-data-file)
+
 ---
+
 # Features
 
 ## Adding a ToDo task: `todo`
