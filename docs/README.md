@@ -5,11 +5,11 @@
 The Prune chatbot is an app for managing tasks via a Command Line Interface (CLI).
 - Features
   - [Listing all tasks: `list`](#listing-all-tasks-list)
-  - [Marking task as completed: `mark`](#marking-task-as-completed-mark)
-  - [Marking task as not completed: `unmark`](#marking-task-as-not-completed-unmark)
   - [Adding a ToDo task: `todo`](#adding-a-todo-task-todo)
   - [Adding a Deadline task: `deadline`](#adding-a-deadline-task-deadline)
   - [Adding an Event task: `event`](#adding-an-event-task-event)
+  - [Marking task as completed: `mark`](#marking-task-as-completed-mark)
+  - [Marking task as not completed: `unmark`](#marking-task-as-not-completed-unmark)
   - [Deleting a task: `delete`](#deleting-a-task-delete)
   - [Finding tasks: `find`](#finding-tasks-find)
   - [Exiting the program: `bye`](#exiting-the-program-bye)
@@ -17,6 +17,55 @@ The Prune chatbot is an app for managing tasks via a Command Line Interface (CLI
   - [Editing the data file](#editing-the-data-file)
 ---
 # Features
+
+## Adding a ToDo task: `todo`
+Adds a ToDo task to the task list.
+
+**Format:** `todo DESCRIPTION`
+
+**Example:**
+- `todo Join Climbers Club`
+
+```
+	Got it. I've added this task:
+		[T][ ] Join Climbers Club
+	Now you have 4 tasks in the list.
+```
+
+---
+
+## Adding a Deadline task: `deadline`
+Adds a deadline task with a deadline.
+
+**Format:** `deadline DESCRIPTION /by DATE`
+
+**Example:**
+- `deadline Submit CS2113 /by Week 9`
+
+
+```
+	Got it. I've added this task:
+		[D][ ] submit CS2113 (by: Week 9)
+	Now you have 5 tasks in the list.
+```
+
+---
+
+## Adding an Event task: `event`
+Adds an event with a start and end time.
+
+**Format:** `event DESCRIPTION /from START /to END`
+
+**Example:**
+- `event Team meeting /from 1pm /to 2pm`
+
+```
+	Got it. I've added this task:
+		[E][ ] Team meeting (from: 1pm to: 2pm)
+	Now you have 6 tasks in the list.
+```
+
+---
 
 ## Listing all tasks: `list`
 Displays all tasks in the task list.
@@ -65,55 +114,6 @@ Marks a task as not done in the task list.
 ```
 	Ok, I've marked this task as not done yet:
 		[D][ ] Complete Level 8 (by: Monday)
-```
-
----
-
-## Adding a ToDo task: `todo`
-Adds a ToDo task to the task list.
-
-**Format:** `todo DESCRIPTION`
-
-**Example:**
-- `todo Join Climbers Club` 
-
-```
-	Got it. I've added this task:
-		[T][ ] Join Climbers Club
-	Now you have 4 tasks in the list.
-```
-
----
-
-## Adding a Deadline task: `deadline`
-Adds a deadline task with a deadline.
-
-**Format:** `deadline DESCRIPTION /by DATE`
-
-**Example:**
-- `deadline Submit CS2113 /by Week 9`
-
-
-```
-	Got it. I've added this task:
-		[D][ ] submit CS2113 (by: Week 9)
-	Now you have 5 tasks in the list.
-```
-
----
-
-## Adding an Event task: `event`
-Adds an event with a start and end time.
-
-**Format:** `event DESCRIPTION /from START /to END`
-
-**Example:**
-- `event Team meeting /from 1pm /to 2pm`
-
-```
-	Got it. I've added this task:
-		[E][ ] Team meeting (from: 1pm to: 2pm)
-	Now you have 6 tasks in the list.
 ```
 
 ---
