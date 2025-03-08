@@ -170,7 +170,7 @@ public class Parser {
      * @return Task that was marked or unmarked.
      * @throws InvalidTaskNumber If the task number is invalid.
      */
-    public Task processMarking(String[] input) throws InvalidTaskNumber {
+    public Task processMarking(String[] input) throws InvalidTaskNumber, NullPointerException {
         String command = input[0];
         try {
             int taskIndex = Integer.parseInt(input[1]) - 1;
@@ -184,6 +184,10 @@ public class Parser {
             return task;
         } catch (NumberFormatException e) {
             throw new NumberFormatException("Task number must be an integer.");
+        } catch (NullPointerException e) {
+            throw new NullPointerException("Please enter a valid task number.");
+        } catch (IndexOutOfBoundsException e) {
+            throw new IndexOutOfBoundsException("Please enter a valid task number.");
         }
     }
 
