@@ -55,35 +55,31 @@ public class Parser {
         case DISPLAY_TASKS_COMMAND:
             this.displayTasks();
             return;
-
         case MARK_DONE_COMMAND:
         case MARK_NOT_DONE_COMMAND:
-            task = processMarking(inputArray);
+            task = processMarkCommand(inputArray);
             printMarkTaskMsg(task);
             break;
-
         case TODO_COMMAND:
         case DEADLINE_COMMAND:
         case EVENT_COMMAND:
-            task = processAdding(inputArray);
+            task = processAddCommand(inputArray);
             if (task != null) {
                 printAddTaskMsg(task);
             }
             break;
-
         case DELETE_COMMAND:
-            task = processDeleting(inputArray);
+            task = processDeleteCommand(inputArray);
             printDeleteTaskMsg(task);
             break;
         case FIND_COMMAND:
-            TaskList matchingTasks = processFinding(inputArray);
+            TaskList matchingTasks = processFindCommand(inputArray);
             displayMatchingTasks(matchingTasks);
             break;
         default:
             throw new InvalidCommand(String.format("\tUnknown command: %s\n\tPlease try again", command));
         }
 
-        // Write data to file for mark, todo, deadline, event, delete commands
         if (task != null) {
             this.storage.writeData(this.tasks);
         }
@@ -148,7 +144,7 @@ public class Parser {
     }
 
     /**
-     * Processes the saved data when loading from a file.
+     * Processes the saved data by loading data from storage file.
      *
      * @param input Input string containing the task data.
      */
@@ -156,9 +152,8 @@ public class Parser {
         String[] inputArray = input.split(" ", 3);
         String markStatus = inputArray[0];
         boolean isDone = markStatus.equals(MARK_DONE_COMMAND);
-        // Form add task input array by removing mark/unmark command
         String[] newInputArray = Arrays.copyOfRange(inputArray, 1, inputArray.length);
-        processAdding(newInputArray);
+        processAddCommand(newInputArray);
         Task addedTask = this.tasks.tasksList.get(this.tasks.tasksList.size() - 1);
         this.tasks.markTask(addedTask, isDone);
     }
@@ -170,7 +165,7 @@ public class Parser {
      * @return Task that was marked or unmarked.
      * @throws InvalidTaskNumber If the task number is invalid.
      */
-    public Task processMarking(String[] input) throws InvalidTaskNumber, NullPointerException {
+    public Task processMarkCommand(String[] input) throws InvalidTaskNumber, NullPointerException {
         String command = input[0];
         try {
             int taskIndex = Integer.parseInt(input[1]) - 1;
@@ -198,7 +193,7 @@ public class Parser {
      * @return The task that was deleted.
      * @throws InvalidTaskNumber If the task number is invalid.
      */
-    public Task processDeleting(String[] input) throws InvalidTaskNumber {
+    public Task processDeleteCommand(String[] input) throws InvalidTaskNumber {
         try {
             int taskIndex = Integer.parseInt(input[1]) - 1;
             if (taskIndex >= this.tasks.tasksList.size() || taskIndex < 0) {
@@ -218,7 +213,7 @@ public class Parser {
      * @param input Array containing the command and task arguments.
      * @return Added task.
      */
-    public Task processAdding(String[] input) {
+    public Task processAddCommand(String[] input) {
         String command = input[0];
         try {
             String details = input[1];
@@ -246,12 +241,14 @@ public class Parser {
             this.tasks.addTask(task);
             return task;
         } catch (Exception e) {
-            System.out.println(String.format("\tInsufficient descriptions given for command: %s\n\t" + "Please ensure the following format:\n" + "\t\ttodo description\n" + "\t\tdeadline description /by when\n" + "\t\tevent description /from start /to end", command));
+            System.out.println(String.format("\tInsufficient descriptions given for command: %s\n\t"
+                    + "Please ensure the following format:\n" + "\t\ttodo description\n"
+                    + "\t\tdeadline description /by when\n" + "\t\tevent description /from start /to end", command));
         }
         return null;
     }
 
-    public TaskList processFinding(String[] input) {
+    public TaskList processFindCommand(String[] input) {
         String keyword = input[1];
         return this.tasks.find(keyword);
     }

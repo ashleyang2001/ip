@@ -6,8 +6,8 @@ package prune.tasks;
  */
 public class Event extends Task {
 
-    protected String from; // The start time of the event
-    protected String to;   // The end time of the event
+    protected String from;
+    protected String to;
 
     /**
      * Constructs an Event task with a description, start time, and end time.

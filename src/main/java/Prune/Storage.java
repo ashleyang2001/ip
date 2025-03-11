@@ -27,27 +27,13 @@ public class Storage {
     }
 
     /**
-     * Loads data from the file specified in the filePath. If the file does not exist, it creates the file.
-     * It processes each line of the file using the provided parser.
+     * Processes each line of storage file using the provided parser.
      *
      * @param parser The parser used to process the data from the file.
      */
     public void load(Parser parser) {
         // Create file if it does not exist
-        File file = new File(this.filePath);
-        if (file.exists()) {
-            System.out.println("Storage file found: " + file.getAbsolutePath());
-        } else {
-            try {
-                if (file.createNewFile()) {
-                    System.out.println("Storage file created: " + file.getAbsolutePath());
-                } else {
-                    System.out.println("Failed to create storage file.");
-                }
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
-        }
+        File file = validateStorageFile();
         // Read file
         try {
             Scanner scanner = new Scanner(file);
@@ -62,12 +48,35 @@ public class Storage {
     }
 
     /**
+     * Loads data from the file specified in the filePath.
+     * If the file does not exist, it creates the file.
+     */
+    private File validateStorageFile() {
+        File file = new File(this.filePath);
+        if (file.exists()) {
+            System.out.println("Storage file found: " + file.getAbsolutePath());
+        } else {
+            try {
+                if (file.createNewFile()) {
+                    System.out.println("Storage file created: " + file.getAbsolutePath());
+                } else {
+                    System.out.println("Failed to create storage file.");
+                }
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return file;
+    }
+
+    /**
      * Writes tasks data from the provided TaskList to the file specified in the filePath.
      * Overwrites the existing content in the file with the new task data.
      *
      * @param tasks TaskList containing the tasks to write to the file.
      */
     public void writeData(TaskList tasks) {
+        validateStorageFile();
         try {
             File file = new File(this.filePath);
             FileWriter writer = new FileWriter(file, false);

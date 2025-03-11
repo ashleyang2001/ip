@@ -6,7 +6,7 @@ package prune.tasks;
  */
 public class Deadline extends Task {
 
-    protected String by; // The deadline date for the task
+    protected String by;
 
     /**
      * Constructs a Deadline task with a description and deadline.
