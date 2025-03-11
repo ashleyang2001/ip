@@ -1,5 +1,0 @@
-unmark todo read book 
-mark event project meeting /from Aug 6th 2 /to 4pm
-mark todo join sports club
-mark todo newtask here
-unmark deadline return book /by June 6th
