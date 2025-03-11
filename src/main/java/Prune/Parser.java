@@ -1,5 +1,7 @@
 package prune;
 
+import prune.exceptions.InvalidTaskFormatCommand;
+import prune.exceptions.InvalidTaskFormatInFile;
 import prune.tasks.TaskList;
 import prune.exceptions.InvalidCommand;
 import prune.exceptions.InvalidTaskNumber;
@@ -63,7 +65,11 @@ public class Parser {
         case TODO_COMMAND:
         case DEADLINE_COMMAND:
         case EVENT_COMMAND:
-            task = processAddCommand(inputArray);
+            try {
+                task = processAddCommand(inputArray);
+            } catch (InvalidTaskFormatCommand e) {
+                System.out.println(e.getMessage());
+            }
             if (task != null) {
                 printAddTaskMsg(task);
             }
@@ -148,12 +154,21 @@ public class Parser {
      *
      * @param input Input string containing the task data.
      */
-    public void processSavedData(String input) {
+    public void processSavedData(String input) throws InvalidTaskFormatInFile {
         String[] inputArray = input.split(" ", 3);
+        if (inputArray.length != 3) {
+            throw new InvalidTaskFormatInFile("Task data format is incorrect in storage file.\n"
+                    + "Valid task format: " + InvalidTaskFormatInFile.VALID_TASK_FORMAT + System.lineSeparator());
+        }
         String markStatus = inputArray[0];
         boolean isDone = markStatus.equals(MARK_DONE_COMMAND);
         String[] newInputArray = Arrays.copyOfRange(inputArray, 1, inputArray.length);
-        processAddCommand(newInputArray);
+        try {
+            processAddCommand(newInputArray);
+        } catch (InvalidTaskFormatCommand e) {
+            System.out.println("\tTask data in storage file do not contain the appropriate task arguments for the given task type.\n");
+            System.out.println(e.getMessage());
+        }
         Task addedTask = this.tasks.tasksList.get(this.tasks.tasksList.size() - 1);
         this.tasks.markTask(addedTask, isDone);
     }
@@ -213,7 +228,7 @@ public class Parser {
      * @param input Array containing the command and task arguments.
      * @return Added task.
      */
-    public Task processAddCommand(String[] input) {
+    public Task processAddCommand(String[] input) throws InvalidTaskFormatCommand {
         String command = input[0];
         try {
             String details = input[1];
@@ -241,11 +256,15 @@ public class Parser {
             this.tasks.addTask(task);
             return task;
         } catch (Exception e) {
-            System.out.println(String.format("\tInsufficient descriptions given for command: %s\n\t"
-                    + "Please ensure the following format:\n" + "\t\ttodo description\n"
-                    + "\t\tdeadline description /by when\n" + "\t\tevent description /from start /to end", command));
+            String errorMsg = String.format("""
+                    \tInsufficient descriptions given for task type: %s
+                    \t\
+                    Please ensure the following format:
+                    \t\ttodo description
+                    \t\tdeadline description /by when
+                    \t\tevent description /from start /to end""", command);
+            throw new InvalidTaskFormatCommand(errorMsg);
         }
-        return null;
     }
 
     public TaskList processFindCommand(String[] input) {

@@ -1,5 +1,6 @@
 package prune;
 
+import prune.exceptions.InvalidTaskFormatInFile;
 import prune.tasks.TaskList;
 import prune.tasks.Task;
 
@@ -44,6 +45,8 @@ public class Storage {
             scanner.close();
         } catch (FileNotFoundException e) {
             System.out.printf("Storage file is not found: %s\n", this.filePath);
+        } catch (InvalidTaskFormatInFile e) {
+            System.out.printf(e.getMessage());
         }
     }
 

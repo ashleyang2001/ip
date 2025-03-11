@@ -15,7 +15,7 @@ public class Ui {
      * Greets the user and displays the chatbot mascot.
      */
     public void greet() {
-        System.out.println("\tHello! I am Prune.");
+        System.out.println("\n\tWoof! I am Prune.");
         String mascot = """
                           .-"-.
                          /|6 6|\\
