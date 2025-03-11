@@ -1,4 +1,4 @@
-package Prune.Tasks;
+package prune.tasks;
 
 /**
  * Represents a ToDo task. A ToDo task includes a description and is used for tasks that have no specific time or deadline.

@@ -1,4 +1,4 @@
-package Prune.Tasks;
+package prune.tasks;
 
 /**
  * Represents an abstract task with a description and completion status.

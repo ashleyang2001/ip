@@ -1,7 +1,7 @@
-package Prune;
+package prune;
 
-import Prune.Tasks.TaskList;
-import Prune.Tasks.Task;
+import prune.tasks.TaskList;
+import prune.tasks.Task;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,12 +1,12 @@
-package Prune;
+package prune;
 
-import Prune.Tasks.TaskList;
-import Prune.Exceptions.InvalidCommand;
-import Prune.Exceptions.InvalidTaskNumber;
-import Prune.Tasks.Deadline;
-import Prune.Tasks.Event;
-import Prune.Tasks.Task;
-import Prune.Tasks.ToDo;
+import prune.tasks.TaskList;
+import prune.exceptions.InvalidCommand;
+import prune.exceptions.InvalidTaskNumber;
+import prune.tasks.Deadline;
+import prune.tasks.Event;
+import prune.tasks.Task;
+import prune.tasks.ToDo;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package Prune.Tasks;
+package prune.tasks;
 
 /**
  * Represents an Event task. An Event task includes a description, a start time, and an end time.

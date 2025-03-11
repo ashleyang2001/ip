@@ -1,4 +1,4 @@
-package Prune.Tasks;
+package prune.tasks;
 
 /**
  * Represents a Deadline task. Deadline task includes a description and a deadline date.

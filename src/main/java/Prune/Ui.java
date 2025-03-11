@@ -1,4 +1,4 @@
-package Prune;
+package prune;
 
 import java.util.Scanner;
 

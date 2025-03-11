@@ -1,4 +1,4 @@
-package Prune.Exceptions;
+package prune.exceptions;
 
 /**
  * Exception thrown when an invalid task number is provided.

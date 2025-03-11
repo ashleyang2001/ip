@@ -1,6 +1,6 @@
-package Prune;
+package prune;
 
-import Prune.Tasks.TaskList;
+import prune.tasks.TaskList;
 
 /**
  * Represents a chatbot named Prune that manages task list, storage, ui and parser objects
