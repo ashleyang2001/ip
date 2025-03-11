@@ -53,22 +53,20 @@ public class Storage {
      */
     private File validateStorageFile() {
         File file = new File(this.filePath);
-        if (file.exists()) {
-            System.out.println("Storage file found: " + file.getAbsolutePath());
-        } else {
+        if (!file.exists()) {
             try {
                 // Check for parent directories
                 File parent = file.getParentFile();
                 if (parent != null && !parent.exists()) {
                     if (parent.mkdirs()) {
-                        System.out.println("Directories are created.");
+                        System.out.println("Directories are created successfully.");
                     } else {
                         System.out.println("Failed to create parent directories.");
                     }
                 }
                 // Create new file
                 if (file.createNewFile()) {
-                    System.out.println("Storage file created at: " + file.getAbsolutePath());
+                    return file;
                 } else {
                     System.out.println("Failed to create storage file.");
                 }
