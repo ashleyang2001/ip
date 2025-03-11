@@ -17,13 +17,13 @@ public class Ui {
     public void greet() {
         System.out.println("\tHello! I am Prune.");
         String mascot = """
-                                    .-"-.
-                                   /|6 6|\\
-                                  {/(_0_)\\}
-                                   _/ ^ \\_
-                                  (/ /^\\ \\)-'
-                                   ""' '""
-                          """;
+                          .-"-.
+                         /|6 6|\\
+                        {/(_0_)\\}
+                         _/ ^ \\_
+                        (/ /^\\ \\)-'
+                         ""' '""
+                """;
         System.out.println(mascot);
         System.out.println("\tWhat can I do for you?\n");
     }
