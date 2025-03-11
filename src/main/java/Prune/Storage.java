@@ -57,8 +57,18 @@ public class Storage {
             System.out.println("Storage file found: " + file.getAbsolutePath());
         } else {
             try {
+                // Check for parent directories
+                File parent = file.getParentFile();
+                if (parent != null && !parent.exists()) {
+                    if (parent.mkdirs()) {
+                        System.out.println("Directories are created.");
+                    } else {
+                        System.out.println("Failed to create parent directories.");
+                    }
+                }
+                // Create new file
                 if (file.createNewFile()) {
-                    System.out.println("Storage file created: " + file.getAbsolutePath());
+                    System.out.println("Storage file created at: " + file.getAbsolutePath());
                 } else {
                     System.out.println("Failed to create storage file.");
                 }
